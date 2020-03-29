@@ -3,6 +3,8 @@ class AminoAcidLL{
   String[] codons;
   int[] counts;
   AminoAcidLL next;
+  static AminoAcidLL head;
+  static AminoAcidLL iterator = head;
 
   AminoAcidLL(){
   }
@@ -14,10 +16,8 @@ class AminoAcidLL{
    * NOTE: Does not check for repeats!! */
   AminoAcidLL(String inCodon){
     aminoAcid = AminoAcidResources.getAminoAcidFromCodon(inCodon);
-    //System.out.println(aminoAcid);
     codons = AminoAcidResources.getCodonListForAminoAcid(aminoAcid);
     counts = new int[codons.length]; //increment at the index where the codon that repeats is
-    //System.out.println(counts.length);
     next = null;
   }
 
@@ -28,32 +28,24 @@ class AminoAcidLL{
    * If there is no next node, add a new node to the list that would contain the codon. 
    */
   private void addCodon(String inCodon){
-   /*//base cases
-    if(next == null){
-
-    }
-    if(codon == Node){
-      //increment codons(inCodon);
-    }*/
-    if(AminoAcidResources.getAminoAcidFromCodon(inCodon) == iterator.aminoAcid){
-      //increment codons(inCodon);
-      for(int i = 0; i < iterator.codons.length; i++){
-        if(inCodon == iterator.codons[i]){
-          iterator.counts[i]++;
-        }
-      }
-      return;
-    }
-
-    /*if(aminoacid == Aminoacid.getAminoacidFromCodon(inCodon)){
-      increment codons(inCodon);
+    if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon)){
+      incrementCounts(inCodon);
     }else{
-      if(nextNode != null){
+      if(next != null){
         next.addCodon(inCodon);
       }else{
         AminoAcidLL aminoacid = new AminoAcidLL(inCodon);
+        next = aminoacid;
       }
-    }*/
+    }
+  }
+  //increase count on a node
+  private void incrementCounts(String inCodon){
+    for(int i = 0; i < codons.length; i++){
+      if(inCodon.equals(codons[i])){
+        counts[i]++;
+      }
+    }
   }
 
 
@@ -116,6 +108,7 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* recursively determines if a linked list is sorted or not */
   public boolean isSorted(){
+
     return false;
   }
 
@@ -123,24 +116,35 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* Static method for generating a linked list from an RNA sequence */
   public static AminoAcidLL createFromRNASequence(String inSequence){
-    //separate
-    //separate string in 3 char strings
-    String newStr = "";
-    while(inSequence.length() != 0){
-      newStr = inSequence.substring(0,3);
-      inSequence = inSequence.substring(3);
-      //new node with newstr
-      //create head
-      //new instance
-      AminoAcidLL list = new AminoAcidLL(newStr);
+    //String newStr = inSequence.substring(0,3);
+    AminoAcidLL list = new AminoAcidLL(inSequence.substring(0,3));
+    head = list;
+    list.addCodon(inSequence.substring(0,3));
+    inSequence = inSequence.substring(3);
+    while(inSequence.length() != 0) {
+      String newStr = inSequence.substring(0,3);
       list.addCodon(newStr);
-
     }
-    //return a new instance of amino with 3char str
-    //llamar a otros metodos desde aqui maybe????
-    return null;
+    printList(list);
+    return list;
   } /////here
 
+  public static void printList(AminoAcidLL list){
+    int count = 1;
+    AminoAcidLL iterator = list;
+    while (iterator != null) {
+      System.out.println("Codon " + count + ": " + iterator.aminoAcid);
+      countsFromCodon(iterator);
+      iterator = iterator.next;
+      count++;
+    }
+  }
+  public static void countsFromCodon(AminoAcidLL codon){
+    for(int i = 0; i < codon.counts.length; i++){
+      System.out.print(codon.counts[i] + ", ");
+    }
+    System.out.println();
+  }
 
   /********************************************************************************************/
   /* sorts a list by amino acid character*/
