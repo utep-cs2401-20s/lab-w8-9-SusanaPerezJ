@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AminoAcidLLTester {
     public String a = "CCGUUGGCACUGUUG";
     public static void main(String[] args) {
-        String a = "CCGUUGGCACUGUUG";
+        String a = "CCGUUGGCACUGUUGUAA";
         AminoAcidLL list = new AminoAcidLL();
         list.createFromRNASequence(a);
     }
