@@ -96,38 +96,32 @@ class AminoAcidLL{
       return -1;
     }*/
 
-    int difference = 0;
-    if(next != null) {
-      difference += next.aminoAcidCompare(inList.next);
-    }
+    int diff = 0;
     if(inList == null) {
-      difference += totalCount();
+      diff += totalCount();
     }
-
-    else if(aminoAcid == inList.aminoAcid) {
-      difference += totalDiff(inList);
-
+    if(next != null) {
+      diff += next.aminoAcidCompare(inList.next);
+    }else if(aminoAcid == inList.aminoAcid) {
+      diff += totalDiff(inList);
       if(next != null) {
-        difference += next.aminoAcidCompare(inList.next);
+        diff += next.aminoAcidCompare(inList.next);
       }
-
       if(next == null && inList.next != null) {
-        difference += aminoAcidCompare(inList.next);
+        diff += aminoAcidCompare(inList.next);
       }
-    } else if(next != null && aminoAcid < inList.aminoAcid) {
-      difference += totalCount();
-
-      if(next != null) {
-        difference += next.aminoAcidCompare(inList);
-      }
-    } else if(next == null || aminoAcid > inList.aminoAcid) {
-      difference += inList.totalCount();
-
+    }else if(next == null || aminoAcid > inList.aminoAcid){
+      diff += inList.totalCount();
       if(inList.next != null) {
-        difference += aminoAcidCompare(inList.next);
+        diff += aminoAcidCompare(inList.next);
+      }
+    }else if(inList.aminoAcid > aminoAcid && next != null) {
+      diff += totalCount();
+      if(next != null) {
+        diff += next.aminoAcidCompare(inList);
       }
     }
-    return difference;
+    return diff;
   }
 
   /********************************************************************************************/
@@ -137,41 +131,32 @@ class AminoAcidLL{
     /*if(!inList.isSorted()) {
       return -1;
     }*/
-    int difference = 0;
-// If inList is NULL, increment the total count
+    int diff = 0;
     if(inList == null) {
-      difference += totalCount();
+      diff += totalCount();
     }
-// If next is not equal to NULL, make a recursive call
     if(next != null) {
-      difference += next.codonCompare(inList.next);
-    }
-
-// If the aminoAcid match, subtract the difference in counts and stored to the difference
-    else if(aminoAcid == inList.aminoAcid) {
-      difference += codonDiff(inList);
-
+      diff += next.codonCompare(inList.next);
+    }else if(aminoAcid == inList.aminoAcid) {
+      diff += codonDiff(inList);
       if(next != null) {
-        difference += next.codonCompare(inList.next);
+        diff += next.codonCompare(inList.next);
       }
-
       if(next == null && inList.next != null) {
-        difference += codonCompare(inList.next);
-      }
-    } else if(next != null && aminoAcid < inList.aminoAcid) {
-      difference += totalCount();
-
-      if(next != null) {
-        difference += next.codonCompare(inList);
+        diff += codonCompare(inList.next);
       }
     } else if(next == null || aminoAcid > inList.aminoAcid) {
-      difference += inList.totalCount();
-
+      diff += inList.totalCount();
       if(inList.next != null) {
-        difference += codonCompare(inList.next);
+        diff += codonCompare(inList.next);
+      }
+    }else if(next != null && aminoAcid < inList.aminoAcid) {
+      diff+= totalCount();
+      if(next != null) {
+        diff += next.codonCompare(inList);
       }
     }
-    return difference;
+    return diff;
   }
 
 

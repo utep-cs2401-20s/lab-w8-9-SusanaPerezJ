@@ -60,7 +60,9 @@ class AminoAcidLLTester {
      * With a string that has a STOP codon to check the condition on createFromRNASequence that stops the creation of codons even if there are more codons in front of the stop.*/
     @Test
     public void aminoListTest1(){
-
+        AminoAcidLL first = AminoAcidLL.createFromRNASequence(a);
+        char[] expected = {'P','L','A'};
+        assertArrayEquals(expected, first.aminoAcidList());
     }
     /*TEST 4
      *INPUT: "UAUAGCGUGUUUUAUUGAUCUUGC"
@@ -70,7 +72,9 @@ class AminoAcidLLTester {
      * With a string that has a STOP codon to check the condition on createFromRNASequence that stops the creation of codons even if there are more codons in front of the stop.*/
     @Test
     public void aminoListTest2(){
-
+        AminoAcidLL first = AminoAcidLL.createFromRNASequence(d);
+        char[] expected = {'C','F','K','N','T'};
+        assertArrayEquals(expected, first.aminoAcidList());
     }
     /*TEST 5
      *INPUT:
@@ -121,9 +125,9 @@ class AminoAcidLLTester {
 
     }
     /*TEST 9
-     *INPUT:
-     * EXPECTED OUTPUT = T, S, V, F
-     * ACTUAL OUTPUT = T, S, V, F
+     *INPUT:  c = "GCUGAGGAUAUGUCA", d = "UGUUUUAAAAAUAACACU"
+     * EXPECTED OUTPUT = 1
+     * ACTUAL OUTPUT = 1
      *
      * With a string that has a STOP codon to check the condition on createFromRNASequence that stops the creation of codons even if there are more codons in front of the stop.*/
     @Test
@@ -135,9 +139,9 @@ class AminoAcidLLTester {
         assertEquals(expected, first.aminoAcidCompare(second));
     }
     /*TEST 10
-     *INPUT: "UAUAGCGUGUUUUAUUGAUCUUGC"
-     * EXPECTED OUTPUT = T, S, V, F
-     * ACTUAL OUTPUT = T, S, V, F
+     *INPUT: c = "GCUGAGGAUAUGUCA"
+     * EXPECTED OUTPUT = 0
+     * ACTUAL OUTPUT = 0
      *
      * With a string that has a STOP codon to check the condition on createFromRNASequence that stops the creation of codons even if there are more codons in front of the stop.*/
     @Test
@@ -150,22 +154,31 @@ class AminoAcidLLTester {
     }
     /*TEST 11
      *INPUT: "UAUAGCGUGUUUUAUUGAUCUUGC"
-     * EXPECTED OUTPUT = T, S, V, F
-     * ACTUAL OUTPUT = T, S, V, F
+     * EXPECTED OUTPUT = 0
+     * ACTUAL OUTPUT = 2
      *
      * With a string that has a STOP codon to check the condition on createFromRNASequence that stops the creation of codons even if there are more codons in front of the stop.*/
     @Test
     public void codonCompare1(){
-
+        //these list are already sorted
+        AminoAcidLL first = AminoAcidLL.createFromRNASequence(a);
+        AminoAcidLL second = AminoAcidLL.createFromRNASequence(b);
+        int expected = 0;
+        assertEquals(expected, first.codonCompare(second));
     }
     /*TEST 12
      *INPUT: "UAUAGCGUGUUUUAUUGAUCUUGC"
-     * EXPECTED OUTPUT = T, S, V, F
-     * ACTUAL OUTPUT = T, S, V, F
+     * EXPECTED OUTPUT = 1
+     * ACTUAL OUTPUT = 1
      *
      * With a string that has a STOP codon to check the condition on createFromRNASequence that stops the creation of codons even if there are more codons in front of the stop.*/
     @Test
     public void codonCompare2(){
+        //these list are already sorted
+        AminoAcidLL first = AminoAcidLL.createFromRNASequence(c);
+        AminoAcidLL second = AminoAcidLL.createFromRNASequence(d);
+        int expected = 1;
+        assertEquals(expected, first.codonCompare(second));
 
     }
 
