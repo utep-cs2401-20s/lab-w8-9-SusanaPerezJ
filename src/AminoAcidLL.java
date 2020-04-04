@@ -6,6 +6,7 @@ class AminoAcidLL{
   int[] counts;
   AminoAcidLL next;
 
+  public static AminoAcidLL iterator;
   AminoAcidLL(){
   }
 
@@ -92,10 +93,9 @@ class AminoAcidLL{
   //I got help from Cynthia for this method//
   public int aminoAcidCompare(AminoAcidLL inList){
     // Checking if the list is sorted
-    /*if(!inList.isSorted()) {
+    if(!inList.isSorted()) {
       return -1;
-    }*/
-
+    }
     int diff = 0;
     if(inList == null) {
       diff += totalCount();
@@ -128,9 +128,9 @@ class AminoAcidLL{
   /* Same ad above, but counts the codon usage differences
    * Must be sorted. */
   public int codonCompare(AminoAcidLL inList){
-    /*if(!inList.isSorted()) {
+    if(!inList.isSorted()) {
       return -1;
-    }*/
+    }
     int diff = 0;
     if(inList == null) {
       diff += totalCount();
@@ -200,13 +200,11 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* recursively determines if a linked list is sorted or not */
   public boolean isSorted(){
-    if(aminoAcid > next.aminoAcid){
+    if(iterator.aminoAcid > iterator.next.aminoAcid){
       return false;
     }else{
-      System.out.println(this.aminoAcid);
-      System.out.println(this.next.aminoAcid);
-      //this.aminoAcid = this.next;
-      //isSorted();
+      iterator = iterator.next;
+      isSorted();
     }
     return true;
   }
@@ -225,6 +223,7 @@ class AminoAcidLL{
         inSequence = "";
       }
     }
+    sort(list);
     printList(list);
     return list;
   }
@@ -252,16 +251,29 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* sorts a list by amino acid character*/
   public static AminoAcidLL sort(AminoAcidLL inList) {
-    //Node current will point to head
+    AminoAcidLL head = inList;
+    AminoAcidLL iterator = null;
+    AminoAcidLL temp;
 
-
-    if(inList == null) {
+  //return list if its null or if it only has one node
+    if(head == null || inList.next == null) {
       return inList;
+    }else {
+      while(head != null) {
+        iterator = inList.next;
+        while(iterator != null) {
+          if(inList.aminoAcid > iterator.aminoAcid) {
+            //swap pointers
+            temp = iterator;
+            head.next = iterator.next;
+            temp.next = head;
+          }
+          iterator = iterator.next;
+        }
+        head = head.next;
+      }
     }
-    else {
-
-    }
-    printList(inList);
+    inList = head;
     return inList;
   }
 }
