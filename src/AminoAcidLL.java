@@ -27,6 +27,8 @@ class AminoAcidLL{
    * if not passes the task to the next node. 
    * If there is no next node, add a new node to the list that would contain the codon. 
    */
+
+  //I got help from Michelle for this method//
   private void addCodon(String inCodon){
     //base case
     if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon)){
@@ -86,6 +88,8 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* Recursive method that finds the differences in **Amino Acid** counts. 
    * the list *must* be sorted to use this method */
+
+  //I got help from Cynthia for this method//
   public int aminoAcidCompare(AminoAcidLL inList){
     // Checking if the list is sorted
     if(!inList.isSorted()) {
@@ -136,19 +140,14 @@ class AminoAcidLL{
   /* Same ad above, but counts the codon usage differences
    * Must be sorted. */
   public int codonCompare(AminoAcidLL inList){
-    // Checking if the list is sorted
     if(!inList.isSorted()) {
       return -1;
     }
-
-// Creating a variable that will store the difference in counts
     int difference = 0;
-
 // If inList is NULL, increment the total count
     if(inList == null) {
       difference += totalCount();
     }
-
 // If next is not equal to NULL, make a recursive call
     if(next != null) {
       difference += next.codonCompare(inList.next);
@@ -189,15 +188,14 @@ class AminoAcidLL{
       return new char[]{aminoAcid};
     }
     char[] amino = next.aminoAcidList();
-    char[] ret = new char[amino.length+1];
+    char[] aminoList = new char[amino.length+1];
 
-    ret[0] = aminoAcid;
+    aminoList[0] = aminoAcid;
     //loop to populate
-    for(int i = 1; i < ret.length; i++){
-      ret[i] = amino[i-1];
+    for(int i = 1; i < aminoList.length; i++){
+      aminoList[i] = amino[i-1];
     }
-
-   return ret;
+   return aminoList;
   }
 
 
@@ -209,14 +207,13 @@ class AminoAcidLL{
       return new int[]{totalCount()};
     }
     int[] amino = next.aminoAcidCounts();
-    int[] ret = new int[amino.length+1];
 
+    int[] ret = new int[amino.length+1];
     ret[0] = totalCount();
     //loop to populate
     for(int i = 1; i < ret.length; i++){
       ret[i] = amino[i-1];
     }
-
     return ret;
   }
 
@@ -237,23 +234,20 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* Static method for generating a linked list from an RNA sequence */
   public static AminoAcidLL createFromRNASequence(String inSequence){
-    //don't forget to check for errors
     AminoAcidLL list = new AminoAcidLL(inSequence.substring(0,3));
     while(inSequence.length() != 0) {
-      /*if(list.next == null){
-        head = list;
-        //System.out.println("head is:" + head.aminoAcid);
-      }*/
       String newStr = inSequence.substring(0,3);
-      list.addCodon(newStr);
-      inSequence = inSequence.substring(3);
+      if(AminoAcidResources.getAminoAcidFromCodon(newStr) != '*'){
+        list.addCodon(newStr);
+        inSequence = inSequence.substring(3);
+      }else{
+        inSequence = "";
+      }
     }
-   // list.isSorted();
-    sort(list);
-    list.aminoAcidCounts();
-    //sort(list);
+    printList(list);
     return list;
   }
+
 //helper method to print the list
   public static void printList(AminoAcidLL list){
     int count = 1;
@@ -265,6 +259,7 @@ class AminoAcidLL{
       count++;
     }
   }
+  //helper method to check the content of counts
   public static void countsFromCodon(AminoAcidLL codon){
     for(int i = 0; i < codon.counts.length; i++){
       System.out.print(codon.counts[i] + ", ");
@@ -276,29 +271,13 @@ class AminoAcidLL{
   /* sorts a list by amino acid character*/
   public static AminoAcidLL sort(AminoAcidLL inList) {
     //Node current will point to head
-    AminoAcidLL head = inList;
-    AminoAcidLL index = null;
-    AminoAcidLL temp = null;
-    //char temp;
 
-    if(head == null) {
+
+    if(inList == null) {
       return inList;
     }
     else {
-      while(head != null) {
-        //Node index will point to node next to current
-        index = inList.next;
 
-        while(index != null) {
-          //If current node's data is greater than index's node data, swap the data between them
-          if(inList.aminoAcid > index.aminoAcid) {
-
-            System.out.println("current: "+ inList.aminoAcid + " index: "+ index.aminoAcid);
-          }
-          index = index.next;
-        }
-        head = head.next;
-      }
     }
     printList(inList);
     return inList;
