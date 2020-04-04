@@ -92,24 +92,18 @@ class AminoAcidLL{
   //I got help from Cynthia for this method//
   public int aminoAcidCompare(AminoAcidLL inList){
     // Checking if the list is sorted
-    if(!inList.isSorted()) {
+    /*if(!inList.isSorted()) {
       return -1;
-    }
+    }*/
 
-// Creating a variable that will store the difference in counts
     int difference = 0;
-
-// If inList is NULL, increment the total count
+    if(next != null) {
+      difference += next.aminoAcidCompare(inList.next);
+    }
     if(inList == null) {
       difference += totalCount();
     }
 
-// If next is not equal to NULL, make a recursive call
-    if(next != null) {
-      difference += next.aminoAcidCompare(inList.next);
-    }
-
-// If the aminoAcid match, subtract the difference in counts and stored to the difference
     else if(aminoAcid == inList.aminoAcid) {
       difference += totalDiff(inList);
 
@@ -140,9 +134,9 @@ class AminoAcidLL{
   /* Same ad above, but counts the codon usage differences
    * Must be sorted. */
   public int codonCompare(AminoAcidLL inList){
-    if(!inList.isSorted()) {
+    /*if(!inList.isSorted()) {
       return -1;
-    }
+    }*/
     int difference = 0;
 // If inList is NULL, increment the total count
     if(inList == null) {
@@ -224,8 +218,10 @@ class AminoAcidLL{
     if(aminoAcid > next.aminoAcid){
       return false;
     }else{
-      aminoAcid = next.aminoAcid;
-      isSorted();
+      System.out.println(this.aminoAcid);
+      System.out.println(this.next.aminoAcid);
+      //this.aminoAcid = this.next;
+      //isSorted();
     }
     return true;
   }
@@ -255,6 +251,7 @@ class AminoAcidLL{
     while (list != null) {
       System.out.println("Codon " + count + ": " + list.aminoAcid);
       //countsFromCodon(iterator);
+      System.out.println(list.totalCount());
       list = list.next;
       count++;
     }
